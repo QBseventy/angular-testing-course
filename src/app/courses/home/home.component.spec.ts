@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {CoursesModule} from '../courses.module';
 import {DebugElement} from '@angular/core';
 
@@ -31,7 +31,7 @@ describe('HomeComponent', () => {
 
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
       const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses'])
 
@@ -113,7 +113,9 @@ describe('HomeComponent', () => {
 
       flush();
 
-      const cardTitles = el.queryAll(By.css('.mat-card-title'));
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+
+      console.log(cardTitles);
 
       expect(cardTitles.length).toBeGreaterThan(0,"Could not find card titles");
 
@@ -122,7 +124,7 @@ describe('HomeComponent', () => {
   }));
 
 
-    it("should display advanced courses when tab clicked - async", async(() => {
+    it("should display advanced courses when tab clicked - async", waitForAsync(() => {
 
         coursesService.findAllCourses.and.returnValue(of(setupCourses()));
 
@@ -138,7 +140,7 @@ describe('HomeComponent', () => {
 
             console.log("called whenStable() ");
 
-            const cardTitles = el.queryAll(By.css('.mat-card-title'));
+            const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
 
             expect(cardTitles.length).toBeGreaterThan(0,"Could not find card titles");
 
